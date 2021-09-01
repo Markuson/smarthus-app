@@ -6,15 +6,17 @@ import aspect from '../../styles/GlobalAspect';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export type Props = {
-    theme: any;
+    onSend: () => void
 };
 const { color, dimension: { switchButton }, font, icon } = aspect
 
 const HomeScreen: React.FC<Props> = ({
+    onSend
 }) => {
     const [iconColor, setIconColor] = useState(color.icon.disabled)
     const handlePress = () => {
         iconColor === color.icon.enabled ? setIconColor(color.icon.disabled) : setIconColor(color.icon.enabled)
+        onSend()
     }
     return (
         <View style={styles.appContainer}>
