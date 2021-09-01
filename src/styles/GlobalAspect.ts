@@ -19,7 +19,7 @@ export default {
         enabled: '#ffef96',
       },
       notification: 'red',
-      primary: 'green',
+      primary: 'lightgreen',
       shadow: {
         elevation: 4,
         offset: { width: 5, height: 5 },
@@ -39,7 +39,7 @@ export default {
       card: 'snow',
       icon:{
         disabled: 'gray',
-        enabled: 'yellow',
+        enabled: '#ffef96',
       },
       notification: 'tomato',
       primary: 'darkolivegreen',
@@ -72,16 +72,16 @@ export default {
     numericBold: Platform.OS === 'android' ? 'Roboto-Light' : 'Avenir-Light',
     numericLight: Platform.OS === 'android' ? 'Roboto-Bold' : 'Avenir-Black',
     size:{
-      normal: hp('2%'),
+      normal: hp('2.5%'),
       small: hp('1.5%'),
-      big: hp('3%'),
+      big: hp('4%'),
     }
   },
   icon:{
     size: {
       normal: hp('3%'),
       small: hp('2%'),
-      big: hp('5%'),
+      big: hp('6%'),
     }
   },
   padding: {

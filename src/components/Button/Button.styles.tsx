@@ -23,12 +23,12 @@ const styles = StyleSheet.create({
   icon:{
     justifyContent: 'center',
     alignItems: 'center',
-    width:"15%"
+    width:"20%"
   },
   textContainer:{
     justifyContent: 'center',
     alignItems: 'center',
-    width:"85%"
+    width:"80%"
   },
   text:{
 

@@ -27,11 +27,11 @@ const HomeScreen: React.FC<Props> = ({
                 buttonHeight={switchButton.height}
                 buttonRadius={switchButton.radius}
                 buttonWidth={switchButton.width}
-                iconName={'lightbulb-outline'}
+                iconName={'lightbulb'}
                 iconColor={iconColor}
                 iconSize={icon.size.big}
                 onPress={() => handlePress()}
-                title={'Light 1'}
+                title={'Menjador 1'}
             />
         </View>
     );
