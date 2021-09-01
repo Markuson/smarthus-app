@@ -1,56 +1,38 @@
 import React from 'react';
-import { Text, useColorScheme, View } from 'react-native';
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Appearance } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native';
-import aspect from './src/styles/GlobalAspect';
-import styles from './src/styles/GlobalStyles';
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import aspect from './src/styles/GlobalAspect';
+import GreenhouseScreen from './src/screens/GreenhouseScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
 
-function HomeScreen({ theme }) {
-  return (
-    <View style={styles.appContainer}>
-      <Text style={{ color: theme.colors.text }}>Home</Text>
-    </View>
-  );
-}
-function GrenhouseScreen({ theme }) {
-  return (
-    <View style={styles.appContainer}>
-      <Text style={{ color: theme.colors.text }}>Greenhouse!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen({ theme }) {
-  return (
-    <View style={styles.appContainer}>
-      <Text style={{ color: theme.colors.text }}>Settings!</Text>
-    </View>
-  );
-}
 
 const Tab = createBottomTabNavigator();
 
-const App = () => {
+export type Props = {
+};
+
+const App: React.FC<Props> = () => {
   const MyTheme =
-    useColorScheme() === 'dark'
+    Appearance.getColorScheme() === 'dark'
       ? {
           ...DarkTheme,
           colors: {
             ...DarkTheme.colors,
-            ...aspect.darkTheme,
+            ...aspect.color,
           },
         }
       : {
           ...DefaultTheme,
           colors: {
             ...DefaultTheme.colors,
-            ...aspect.lightTheme,
+            ...aspect.color,
           },
         };
   return (
@@ -71,7 +53,7 @@ const App = () => {
             }
 
             // You can return any component that you like here!
-            return <Icons name={iconName} size={size} color={color} />;
+            return <Icon name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: MyTheme.colors.primary,
           tabBarInactiveTintColor: MyTheme.colors.disabled,
@@ -81,7 +63,7 @@ const App = () => {
       >
         <Tab.Screen
           name="Greenhouse"
-          children={() => <GrenhouseScreen theme={MyTheme} />}
+          children={() => <GreenhouseScreen theme={MyTheme} />}
         />
         <Tab.Screen
           name="Home"
