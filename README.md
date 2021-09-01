@@ -1,52 +1,51 @@
-# Resum
+# Summary
 
-Un sistema per accedir, visualitzar i controlar diferents coses de casa desde un telefon movil i una pagina web.
-El sistema controlara les llum conectades de casa (ikea tradfri), el hivernacle, i visualitzara la temoeratura interna i externa
+A system for accessing, viewing and controlling different things at home from a mobile phone and a website.
+The system will control the connected lights in the house (ikea tradfri), the greenhouse, and will display the internal and external temperature.
 
-- **V0.1:** App android que quan estem conectats al wifi de casa accedeix a les dades del servidor node-red.
-Al servidor node-red conectarem el **hivernacle**, el **gateway tradfri** per controlar les llums i endolls i un **sensor de temperatura i humitat exterior** i un **panell/pantalla per mostrar dades al menjador (??)**.
+- ** V0.1: ** Android app that when we are connected to home wifi accesses the data of the node-red server.
+We will connect the ** greenhouse **, the ** tradfri ** gateway ** to control the lights and plugs and an ** outdoor temperature and humidity sensor ** and a ** panel / screen to display data in the dining room. (??) **.
 
-- **V0.2:** App android es conectara al nuvol quan no estiguem conectats a la xarxa wifi de casa. en aquest nuvol podrem visualitzar la informacio de la casa, pero no podrem controlar res (potser el hivernacle?...).
+- ** V0.2: ** Android app will connect to the cloud when we are not connected to the home wifi network. in this cloud we will be able to visualize the information of the house, but we will not be able to control anything (perhaps the greenhouse? ...).
 
-# Detall
+# Detail
 ## Hardware:
-### Server Node-red:
-el servidor node red sera el que rebrá totes les senyals dels diferents dispositius i les processará.
-Rebrá les senyals del hivernacle i el sensor de temperatura extern mitjançant mqtt i les señals del tradfri mitjançant les funcions del propi sistema.
+### Server Node-network:
+the node red server will receive all the signals from the different devices and process them.
+You will receive the signals from the greenhouse and the external temperature sensor via mqtt and the tradfri signals through the functions of the system itself.
 
 ### Tradfri gateway:
-El gateway tradfri actuara de pasarel·la entre les llums/endolls i el servidor node-red.
+The tradfri gateway will act as a gateway between the lights / plugs and the node-network server.
 
-### Hivernacle:
-El hivernacle enviará al servidor node red la temperatura i la humitat de la terra i rebrá les señals de obrir i tancar la llum del servidor node-red.
-**V0.2**: el hivernacle tambe rebra la ordre de regar les plantes.
+### Greenhouse:
+The greenhouse will send the temperature and humidity of the earth to the node red server and will receive the signals to open and close the light of the node-red server.
+** V0.2 **: The greenhouse will also receive the order to water the plants.
 
-### Temperatura exterior: 
-Constara de un sensor de temperatura y humitat exterior que enviara de forma periodica la lectura de temperatura i humitat cap al servidor node-red. 
-Constara de una cpu wemos D1 funcionant en mode deepSleep. Aquest es conectara cada 30 minuts i enviará la lectura de temperatura al servidor.
+### Outdoor temperature:
+It will consist of an external temperature and humidity sensor that will periodically send the temperature and humidity reading to the node-network server.
+It consists of a wemos D1 cpu running in deepSleep mode. This will connect every 30 minutes and send the temperature reading to the server.
 
 ## Software
 
 ### App:
-App react-native, sol per android i no publicada.
-constara de dos pantalles, una de control de llums i l'altra de control del hivernacle.
-També constara de una capçalera on et sortira la temperatura interior y exterior i una visualització de si el sistema esta conectat ok o no. (i una petita previsio meteorologica??).
-- **control de llums:** En obrir-la, demanarem al servidor node-red que ens envii un Array de objectes on constaran totes les llums que tenim, el seu nom i el seu status. en pulsar un dels interruptors enviarem al servidor el mateix Array i el servidor buscara les diferencies amb el seu estat actual i actualitzara les llums que pertoquin. Quan el status de les llums canvii, enviarem de nou el ARRAY amb totes les llums.
-- **control de hivernacle:** En obrir-la, veurem el status del hivernacle (llum, temperatura y humitat de la terra.). Podrem obrir i tancar el llum manualment o programarla per a que s'obri i es tanqui seguint un horari.
-*futur:* 
-	- Poder regar les plantes, ja sigui automaticament depenent de la humitat o de forma manual.
-	- Incorporar un sensor de lluminositat per poder encendre la llum de forma automatica o calcular/evaluar la cantitat de llum que reben les plantes.
+App react-native, only for android and unpublished.
+it will consist of two screens, one of light control and the other of control of the greenhouse.
+It will also consist of a header where you will get the indoor and outdoor temperature and a display of whether the system is connected ok or not. (and a small weather forecast ??).
+- ** light control: ** When opening it, we will ask the node-red server to send us an Array of objects which will contain all the lights we have, their name and status. pressing one of the switches will send the same Array to the server and the server will look for the differences with its current state and update the corresponding lights. When the status of the lights changes, we will send the ARRAY again with all the lights.
+- ** greenhouse control: ** When opening it, we will see the status of the greenhouse (light, temperature and humidity of the earth.). We can open and close the lamp manually or program it to open and close according to a schedule.
+* future: *
+- To be able to water the plants, either automatically depending on the humidity or manually.
+- Incorporate a light sensor to be able to turn on the light automatically or calculate / evaluate the amount of light received by plants.
 
-# Futur:
+# Future:
 ## Hardware:
-### Panell informatiu:
-Pot ser una pantalla LCD o LED o una matriu LED. en un futur un smartMirror??.
-Aquesta recollira la temperatura interior i exterior i també informacio del sistema com per exemple, si algun element no funciona be.
-Que mes pot recollir??
+### Information panel:
+It can be an LCD or LED display or an LED array. in the future a smartMirror ??.
+This will collect the indoor and outdoor temperature and also system information such as if any item is not working properly.
+What else can you pick up ??
 
 ## Software:
 ### App V2:
-- Incorporar notificacions (push?)
-- conexio desde fora de casa: Podriem afegir un servidor websockets extern al qual ens puguessim conectar quan no detectessim la xarxa wifi de casa nostra. 
-- A traves de aquest servidor exter podriem visualitzar el status de la casa i potser controlar algunes coses 
-
+- Incorporate notifications (push?)
+- connection from outside the home: We could add an external websockets server to which we could connect when we did not detect the wifi network in our home.
+- Through this external server we could visualize the status of the house and maybe control some things
