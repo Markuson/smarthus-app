@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Appearance } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -12,35 +12,40 @@ import GreenhouseScreen from './src/screens/GreenhouseScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 
-export type Props = {
-};
+export type Props = {};
 
 const Tab = createBottomTabNavigator();
 
-const ws = new WebSocket("ws://192.168.10.185:1880/ws/example")
+const ws = new WebSocket('ws://192.168.10.185:1880/ws/smarthus');
 
 const App: React.FC<Props> = () => {
-  const [data, setEcho] = useState({echo: '', timestamp: ''})
-  
-  useEffect(() => {
-      wsCreateListener()
-      return () => {
-        ws.close()
-      }
+  const [smarthusData, setSmarthusData] = useState({ data: {}, timestamp: '' });
 
-  }, [])
-  const wsSendData = () => {
-    ws.send(JSON.stringify({timestamp: new Date().toLocaleString(), data: 'hola'}))
-  }
+  useEffect(() => {
+    wsCreateListener();
+    return () => {
+      ws.close();
+    };
+  }, []);
+
+  const wsSendData = (data: any, request: 'get' | 'send') => {
+    ws.send(
+      JSON.stringify({
+        timestamp: new Date().toLocaleString(),
+        request,
+        data,
+      })
+    );
+  };
 
   const wsCreateListener = () => {
-    ws.onopen = () => ws.send(JSON.stringify({timestamp: new Date().toLocaleString(), data: 'conection opened'}))
+    ws.onopen = () => wsSendData({}, 'get');
+    ws.onmessage = (event: any) => {
+      // console.log('event: ', JSON.parse(event.data).data);
+      setSmarthusData(JSON.parse(event.data));
+    };
+  };
 
-    ws.onmessage = ({data}) => {
-      console.log(data);
-      setEcho({echo: data, timestamp: new Date().toISOString()});
-    }
-  }
   const MyTheme =
     Appearance.getColorScheme() === 'dark'
       ? {
@@ -88,7 +93,9 @@ const App: React.FC<Props> = () => {
         />
         <Tab.Screen
           name="Home"
-          children={() => <HomeScreen onSend={wsSendData} />}
+          children={() => (
+            <HomeScreen allData={smarthusData} onSend={wsSendData} />
+          )}
         />
         <Tab.Screen
           name="Settings"
