@@ -28,11 +28,16 @@ const App: React.FC<Props> = () => {
     };
   }, []);
 
-  const wsSendData = (data: any, request: 'get' | 'send') => {
+  const wsSendData = (
+    data: any,
+    request: 'get' | 'send',
+    device: 'tradfri' | 'greenhouse' = 'tradfri'
+  ) => {
     ws.send(
       JSON.stringify({
         timestamp: new Date().toLocaleString(),
         request,
+        device,
         data,
       })
     );
