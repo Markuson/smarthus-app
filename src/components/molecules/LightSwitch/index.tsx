@@ -1,8 +1,8 @@
 import React from 'react';
-import aspect from '../../styles/GlobalAspect';
-import Button from '../Button';
-
+import aspect from '../../../styles/GlobalAspect';
+import Button from '../../atoms/Button';
 export type Props = {
+  isDisabled?: boolean;
   lightStatus: boolean;
   name: string;
   onPress: any;
@@ -15,7 +15,12 @@ const {
   icon,
 } = aspect;
 
-const LightSwitch: React.FC<Props> = ({ lightStatus, name, onPress }) => {
+const LightSwitch: React.FC<Props> = ({
+  isDisabled = false,
+  lightStatus,
+  name,
+  onPress,
+}) => {
   return (
     <Button
       accessibilityLabel={'testButton'}
@@ -29,6 +34,7 @@ const LightSwitch: React.FC<Props> = ({ lightStatus, name, onPress }) => {
       iconName={'lightbulb'}
       iconColor={lightStatus ? color.icon.enabled : color.icon.disabled}
       iconSize={icon.size.big}
+      isDisabled={isDisabled}
       onPress={() => onPress()}
       title={name}
     />

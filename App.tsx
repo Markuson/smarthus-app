@@ -1,113 +1,163 @@
-import React, { useEffect, useState } from 'react';
-import { Appearance } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import aspect from './src/styles/GlobalAspect';
-import GreenhouseScreen from './src/screens/GreenhouseScreen';
-import HomeScreen from './src/screens/HomeScreen';
-import SettingsScreen from './src/screens/SettingsScreen';
+import React, { ImageBackground, useEffect, useReducer, useState } from 'react';
+import { Alert } from 'react-native';
+import LocationPermission from './src/utils/Permisions';
+import { fetch as netinfoFetch } from '@react-native-community/netinfo';
+import { initialState, reducer } from './src/redux';
+import { ContextProvider } from './src/Context';
+import MyNavigator from './src/Navigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export type Props = {};
+let ws: any;
 
-const Tab = createBottomTabNavigator();
-
-const ws = new WebSocket('ws://192.168.10.185:1880/ws/smarthus');
-
-const App: React.FC<Props> = () => {
-  const [smarthusData, setSmarthusData] = useState({ data: {}, timestamp: '' });
+const App: React.FC = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [devicesChecked, setDevicesChecked] = useState(false);
 
   useEffect(() => {
-    wsCreateListener();
+    (async () => {
+      let checkPermission = await LocationPermission.request();
+      if (checkPermission === false) {
+        Alert.alert(
+          'Permission needed',
+          'Permission to access is needed for smarthus app to work! Restart app and allow us to access the location.'
+        );
+      } else {
+        getNetInfo();
+        setWSconnection();
+      }
+    })();
     return () => {
-      ws.close();
+      if (ws) {
+        ws.close();
+      }
     };
   }, []);
 
-  const wsSendData = (
-    data: any,
-    request: 'get' | 'send',
-    device: 'tradfri' | 'greenhouse' = 'tradfri'
+  useEffect(() => {
+    if (!devicesChecked && state.tradfri.data.length) {
+      checkDevices();
+    }
+  }, [state.tradfri]);
+
+  const checkDevices = () => {
+    if (state.tradfri.data.some((device: any) => !device.label)) {
+      Alert.alert(
+        'New element detected',
+        'we detected a new element in you tradfri system, put name to it on configuration folder'
+      );
+    }
+    setDevicesChecked(true);
+  };
+
+  const getNetInfo = async () => {
+    const netInfo: any = await netinfoFetch();
+    netInfo && netInfo.type === 'wifi'
+      ? dispatch({
+          type: 'SET_ACTUAL_SSID',
+          payload: netInfo.details.ssid,
+        })
+      : dispatch({
+          type: 'SET_ACTUAL_SSID',
+          payload: netInfo.details.ssid,
+        });
+
+    netInfo.details.ssid === state.homeNetwork.ssid
+      ? dispatch({
+          type: 'SET_NOT_AT_HOME',
+          payload: false,
+        })
+      : dispatch({
+          type: 'SET_NOT_AT_HOME',
+          payload: true,
+        });
+  };
+
+  const setNetInfo = async (
+    serverIp: string | undefined,
+    ssid: string | undefined
   ) => {
-    ws.send(
-      JSON.stringify({
-        timestamp: new Date().toLocaleString(),
-        request,
-        device,
-        data,
-      })
-    );
+    let homeNetwork = {
+      ssid: ssid ? ssid : state.homeNetwork.ssid,
+      serverIp: serverIp ? serverIp : state.homeNetwork.serverIp,
+    };
+    dispatch({
+      type: 'SET_TRADFRI_DATA',
+      payload: {
+        data: [],
+        timestamp: '',
+      },
+    });
+    await AsyncStorage.setItem('homeNetwork', JSON.stringify(homeNetwork));
+    dispatch({
+      type: 'SET_HOME_NETWORK',
+      payload: homeNetwork,
+    });
+    setWSconnection();
+  };
+
+  const setWSconnection = async () => {
+    const homeNetworkstr = await AsyncStorage.getItem('homeNetwork');
+    if (homeNetworkstr !== null) {
+      const homeNetwork = JSON.parse(homeNetworkstr);
+      dispatch({
+        type: 'SET_HOME_NETWORK',
+        payload: homeNetwork,
+      });
+      if (homeNetwork.serverIp) {
+        ws = new WebSocket(`ws://${homeNetwork.serverIp}:1880/ws/smarthus`);
+        wsCreateListener();
+      } else {
+        Alert.alert(
+          'Network not set',
+          'You need to set the network on the settings menu to be able to use smarhus.'
+        );
+      }
+    } else {
+      Alert.alert(
+        'Network not set',
+        'You need to set the network on the settings menu to be able to use smarhus.'
+      );
+    }
   };
 
   const wsCreateListener = () => {
     ws.onopen = () => wsSendData({}, 'get');
     ws.onmessage = (event: any) => {
-      // console.log('event: ', JSON.parse(event.data).data);
-      setSmarthusData(JSON.parse(event.data));
+      // console.log('event: ', JSON.parse(event.data));
+      dispatch({
+        type: 'SET_TRADFRI_DATA',
+        payload: JSON.parse(event.data),
+      });
     };
   };
 
-  const MyTheme =
-    Appearance.getColorScheme() === 'dark'
-      ? {
-          ...DarkTheme,
-          colors: {
-            ...DarkTheme.colors,
-            ...aspect.color,
-          },
-        }
-      : {
-          ...DefaultTheme,
-          colors: {
-            ...DefaultTheme.colors,
-            ...aspect.color,
-          },
-        };
+  const wsSendData = (
+    data: any,
+    request: 'get' | 'send' | 'name',
+    device: 'tradfri' | 'greenhouse' = 'tradfri'
+  ) => {
+    if (ws) {
+      ws.send(
+        JSON.stringify({
+          timestamp: new Date().toLocaleString(),
+          request,
+          device,
+          data,
+        })
+      );
+    }
+  };
+
   return (
-    <NavigationContainer theme={MyTheme}>
-      <Tab.Navigator
-        backBehavior={'initialRoute'}
-        initialRouteName={'Home'}
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused ? 'home-lightbulb' : 'home-lightbulb-outline';
-            } else if (route.name === 'Settings') {
-              iconName = focused ? 'cog' : 'cog-outline';
-            } else if (route.name === 'Greenhouse') {
-              iconName = focused ? 'sprout' : 'sprout-outline';
-            }
-
-            // You can return any component that you like here!
-            return <Icon name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: MyTheme.colors.primary,
-          tabBarShowLabel: false,
-          headerShown: false,
-        })}
-      >
-        <Tab.Screen
-          name="Greenhouse"
-          children={() => <GreenhouseScreen theme={MyTheme} />}
-        />
-        <Tab.Screen
-          name="Home"
-          children={() => (
-            <HomeScreen allData={smarthusData} onSend={wsSendData} />
-          )}
-        />
-        <Tab.Screen
-          name="Settings"
-          children={() => <SettingsScreen theme={MyTheme} />}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <ContextProvider
+      dispatch={dispatch}
+      state={state}
+      getNetInfo={getNetInfo}
+      wsSendData={wsSendData}
+      setNetInfo={setNetInfo}
+    >
+      <MyNavigator />
+    </ContextProvider>
   );
 };
 

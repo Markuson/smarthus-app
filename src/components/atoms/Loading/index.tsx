@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
-import aspect from '../../styles/GlobalAspect';
+import aspect from '../../../styles/GlobalAspect';
 
 export type Props = {
   size: 'small' | 'large';

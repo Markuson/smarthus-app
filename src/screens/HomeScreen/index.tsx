@@ -1,19 +1,19 @@
-import React from 'react';
-import { View } from 'react-native';
-import LightSwitch from '../../components/LightSwitch';
-import Loading from '../../components/Loading';
+import React, { useContext } from 'react';
+import { ImageBackground, View } from 'react-native';
+import { Context } from '../../Context';
 
-import { styles } from '../../styles/GlobalStyles';
+import LightSwitch from '../../components/molecules/LightSwitch';
+import Loading from '../../components/atoms/Loading';
 
-export type Props = {
-  allData: any;
-  onSend: (data: any, request: 'get' | 'send') => void;
-};
+import GlobalStyles from '../../styles/GlobalStyles';
+import RefreshButton from '../../components/molecules/refreshButton';
 
-const HomeScreen: React.FC<Props> = ({ allData, onSend }) => {
+const HomeScreen: React.FC = () => {
+  const { state, getNetInfo, wsSendData } = useContext(Context);
+
   const handlePress = (deviceData: any) => {
     // console.log('deviceData: ', deviceData);
-    onSend(
+    wsSendData(
       {
         name: deviceData.name,
         id: deviceData.id,
@@ -23,17 +23,35 @@ const HomeScreen: React.FC<Props> = ({ allData, onSend }) => {
     );
   };
   return (
-    <View style={styles.appContainer}>
-      {allData.data.length > 0 ? (
-        <LightSwitch
-          lightStatus={allData.data[0].on}
-          name={allData.data[0].name}
-          onPress={() => handlePress(allData.data[0])}
-        />
-      ) : (
-        <Loading size="large" />
-      )}
-    </View>
+    <ImageBackground
+      source={require('../../../assets/background1.png')}
+      resizeMode="cover"
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{ flex: 1, justifyContent: 'center' }}
+    >
+      <View style={GlobalStyles.appContainer}>
+        <RefreshButton onRefresh={() => getNetInfo()} />
+        <View style={GlobalStyles.homeContainer}>
+          {state && state.tradfri.data.length > 0 ? (
+            state.tradfri.data.map((element: any, index: any) => {
+              if (element.type.includes('TRADFRI') && element.label) {
+                return (
+                  <LightSwitch
+                    key={index}
+                    isDisabled={state.notAtHome}
+                    lightStatus={element.on}
+                    name={element.label}
+                    onPress={() => handlePress(element)}
+                  />
+                );
+              }
+            })
+          ) : (
+            <Loading size="large" />
+          )}
+        </View>
+      </View>
+    </ImageBackground>
   );
 };
 

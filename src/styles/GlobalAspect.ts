@@ -12,7 +12,7 @@ export default {
     theme === 'dark'
       ? {
           button: 'rgb(40,40,40)',
-          background: 'rgb(24,24,24)',
+          background: 'rgba(24,24,24, 0.5)',
           border: 'darkslategray',
           card: 'rgb(36,37,38)',
           icon: {
@@ -34,7 +34,7 @@ export default {
         }
       : {
           button: 'lightgray',
-          background: 'whitesmoke',
+          background: 'rgba(245,245,245, 1)',
           border: 'lightgray',
           card: 'snow',
           icon: {
@@ -64,6 +64,16 @@ export default {
       width: wp('90%'),
       radius: hp('1%'),
     },
+    tradSettingsButton: {
+      height: hp('6%'),
+      width: wp('50%'),
+      radius: hp('1%'),
+    },
+    netSettingsButton: {
+      height: hp('6%'),
+      width: wp('25%'),
+      radius: hp('1%'),
+    },
   },
   font: {
     light: Platform.OS === 'android' ? 'Raleway-Light' : 'Avenir-Light',
@@ -72,7 +82,8 @@ export default {
     numericLight: Platform.OS === 'android' ? 'Roboto-Bold' : 'Avenir-Black',
     size: {
       normal: hp('2.5%'),
-      small: hp('1.5%'),
+      small: hp('1.8%'),
+      xsmall: hp('1.5%'),
       big: hp('4%'),
     },
   },

@@ -1,59 +1,60 @@
-import { Platform, StyleSheet } from 'react-native';
-import DeviceData from '../utils/DeviceData';
-import GlobalAspect from './GlobalAspect';
+import { StyleSheet } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   // droidSafeArea: {
   //   flex: 1,
   //   paddingTop: Platform.OS === 'android' ? 0 : 0,
   // },
 
-  // appBody: {
-  //   flex: 9,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
-
   appContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    width: wp('100%'),
   },
 
-  // appFooter: {
-  //   flex: 1,
-  //   paddingBottom: 10,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: wp('100%'),
+  },
 
-  // appHeader: {
-  //   flex: 1,
-  //   flexDirection: 'row-reverse',
-  //   alignItems: 'center',
-  //   justifyContent: 'space-between',
-  //   width: DeviceData.deviceWidth,
-  //   paddingHorizontal: 10,
-  // },
-  // backgroundImage: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  // },
+  homeContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: wp('100%'),
+  },
 
-  // linkText: {
-  //   // color: GlobalAspect.color.linkColor,
-  //   fontFamily: GlobalAspect.font.light,
-  //   fontStyle: 'normal',
-  //   fontWeight: '300',
-  //   fontSize: GlobalAspect.font.normalSize,
-  // },
+  mediumContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: wp('100%'),
+    marginTop: hp('2%'),
+  },
 
-  // TextInfo: {
-  //   // color: GlobalAspect.color.grey,
-  //   fontFamily: GlobalAspect.font.numericLight,
-  //   fontStyle: 'normal',
-  //   fontWeight: '300',
-  //   fontSize: GlobalAspect.font.smallSize,
-  //   textAlign: 'center',
-  // },
+  smallContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: wp('100%'),
+    marginTop: hp('1%'),
+  },
+
+  textLine: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: wp('90%'),
+    height: hp('10%'),
+  },
 });
+
+export default styles
