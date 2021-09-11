@@ -1,4 +1,4 @@
-import React, { ImageBackground, useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Alert } from 'react-native';
 import LocationPermission from './src/utils/Permisions';
 import { fetch as netinfoFetch } from '@react-native-community/netinfo';
