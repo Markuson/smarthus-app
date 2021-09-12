@@ -39,6 +39,18 @@ const App: React.FC = () => {
     }
   }, [state.tradfri]);
 
+  useEffect(() => {
+    state.ssid === state.homeNetwork.ssid
+      ? dispatch({
+          type: 'SET_NOT_AT_HOME',
+          payload: false,
+        })
+      : dispatch({
+          type: 'SET_NOT_AT_HOME',
+          payload: true,
+        });
+  }, [state.ssid, state.homeNetwork.ssid]);
+
   const checkDevices = () => {
     if (state.tradfri.data.some((device: any) => !device.label)) {
       Alert.alert(
@@ -59,16 +71,6 @@ const App: React.FC = () => {
       : dispatch({
           type: 'SET_ACTUAL_SSID',
           payload: netInfo.details.ssid,
-        });
-
-    netInfo.details.ssid === state.homeNetwork.ssid
-      ? dispatch({
-          type: 'SET_NOT_AT_HOME',
-          payload: false,
-        })
-      : dispatch({
-          type: 'SET_NOT_AT_HOME',
-          payload: true,
         });
   };
 

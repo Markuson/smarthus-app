@@ -1,6 +1,9 @@
 import React from 'react';
+import { View } from 'react-native';
 import aspect from '../../../styles/GlobalAspect';
+import styles from './LightSwitch.styles';
 import Button from '../../atoms/Button';
+
 export type Props = {
   isDisabled?: boolean;
   lightStatus: boolean;
@@ -22,22 +25,24 @@ const LightSwitch: React.FC<Props> = ({
   onPress,
 }) => {
   return (
-    <Button
-      accessibilityLabel={'testButton'}
-      buttonColor={color.button}
-      buttonFontColor={color.textNormal}
-      buttonFontFamily={font.light}
-      buttonFontSize={font.size.big}
-      buttonHeight={switchButton.height}
-      buttonRadius={switchButton.radius}
-      buttonWidth={switchButton.width}
-      iconName={'lightbulb'}
-      iconColor={lightStatus ? color.icon.enabled : color.icon.disabled}
-      iconSize={icon.size.big}
-      isDisabled={isDisabled}
-      onPress={() => onPress()}
-      title={name}
-    />
+    <View style={styles.container}>
+      <Button
+        accessibilityLabel={'testButton'}
+        buttonColor={color.button}
+        buttonFontColor={color.textNormal}
+        buttonFontFamily={font.light}
+        buttonFontSize={font.size.big}
+        buttonHeight={switchButton.height}
+        buttonRadius={switchButton.radius}
+        buttonWidth={switchButton.width}
+        iconName={'lightbulb'}
+        iconColor={lightStatus ? color.icon.enabled : color.icon.disabled}
+        iconSize={icon.size.big}
+        isDisabled={isDisabled}
+        onPress={() => onPress()}
+        title={name}
+      />
+    </View>
   );
 };
 export default LightSwitch;

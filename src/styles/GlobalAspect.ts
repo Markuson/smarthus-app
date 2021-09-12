@@ -11,7 +11,7 @@ export default {
   color:
     theme === 'dark'
       ? {
-          button: 'rgb(40,40,40)',
+          button: 'rgb(89,89,89)',
           background: 'rgba(24,24,24, 0.5)',
           border: 'darkslategray',
           card: 'rgb(36,37,38)',
