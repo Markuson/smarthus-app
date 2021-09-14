@@ -3,7 +3,6 @@ import { View } from 'react-native';
 
 import Loading from '../../atoms/Loading';
 import LightSwitch from '../../molecules/LightSwitch';
-import RefreshButton from '../../molecules/HeaderButtons';
 import IconTextCenter from '../../molecules/IconTextCenter';
 import HeaderButtons from '../../molecules/HeaderButtons';
 
