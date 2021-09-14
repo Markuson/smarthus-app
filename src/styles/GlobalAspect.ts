@@ -20,6 +20,7 @@ export default {
             enabled: '#ffef96',
           },
           notification: 'red',
+          pressableIcon: 'rgba(255, 255, 255, 0.38)',
           primary: 'lightgreen',
           shadow: {
             elevation: 4,
@@ -42,6 +43,7 @@ export default {
             enabled: '#ffef96',
           },
           notification: 'tomato',
+          pressableIcon: 'rgba(0, 0, 0, 0.38)',
           primary: 'darkolivegreen',
           text: 'rgb(24,25,26)',
           shadow: {
