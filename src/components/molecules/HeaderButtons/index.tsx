@@ -1,10 +1,8 @@
 import React from 'react';
-import { Pressable, Vibration, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Vibration, View } from 'react-native';
 
 import PressableIcon from '../../atoms/PressableIcon' 
 
-import GlobalAspect from '../../../styles/GlobalAspect';
 import styles from './HeaderButtons.styles';
 
 export type Props = {
