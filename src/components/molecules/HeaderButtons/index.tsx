@@ -9,11 +9,12 @@ import styles from './HeaderButtons.styles';
 
 export type Props = {
   onRefresh: any;
+  vibrateTime?: number
 };
 
-const HeaderButtons: React.FC<Props> = ({ onRefresh }) => {
-  const handlePress = () => {
-    Vibration.vibrate(50);
+const HeaderButtons: React.FC<Props> = ({ onRefresh, vibrateTime }) => {
+  const handleRefresh = () => {
+    if(vibrateTime) Vibration.vibrate(vibrateTime);
     onRefresh();
   };
 
@@ -22,7 +23,7 @@ const HeaderButtons: React.FC<Props> = ({ onRefresh }) => {
       <PressableIcon
         name={'refresh'}
         size={'big'}
-        onPress={() => handlePress()}
+        onPress={() => handleRefresh()}
       />
     </View>
   );

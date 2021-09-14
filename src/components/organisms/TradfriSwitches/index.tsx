@@ -5,6 +5,7 @@ import Loading from '../../atoms/Loading';
 import LightSwitch from '../../molecules/LightSwitch';
 import RefreshButton from '../../molecules/HeaderButtons';
 import IconTextCenter from '../../molecules/IconTextCenter';
+import HeaderButtons from '../../molecules/HeaderButtons';
 
 import GlobalStyles from '../../../styles/GlobalStyles';
 
@@ -20,7 +21,7 @@ export type Props = {
 const TradfriSwitches: React.FC<Props> = ({notAtHome, onPress, onRefresh, tradfriData}) => {
   return (
       <View style={GlobalStyles.container}>
-        <RefreshButton onRefresh={() => onRefresh()} />
+        <HeaderButtons onRefresh={() => onRefresh()} vibrateTime={50} />
         <View style={GlobalStyles.homeContainer}>
           {notAtHome ?
             <IconTextCenter
