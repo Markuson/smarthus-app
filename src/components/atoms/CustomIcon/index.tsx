@@ -7,7 +7,7 @@ import styles from './CustomIcon.styles';
 export type Props = {
   name: string;
   color: string | undefined;
-  size: number | string;
+  size: number | string | undefined;
 };
 
 const CustomIcon: React.FC<Props> = ({
