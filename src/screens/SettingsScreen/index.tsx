@@ -22,6 +22,7 @@ const SettingsScreen: React.FC = () => {
       />
       <TradfriSettings
         devices={state.tradfri.data}
+        notAtHome={state.notAtHome}
         onNameChange={(id: string, name: string) =>
           wsSendData(
             {

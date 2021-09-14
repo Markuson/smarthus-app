@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import aspect from '../../../styles/GlobalAspect';
 import styles from './LightSwitch.styles';
-import Button from '../../atoms/Button';
+import Button from '../Button';
 
 export type Props = {
   isDisabled?: boolean;

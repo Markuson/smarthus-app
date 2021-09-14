@@ -7,6 +7,9 @@ import Loading from '../../components/atoms/Loading';
 
 import GlobalStyles from '../../styles/GlobalStyles';
 import RefreshButton from '../../components/molecules/refreshButton';
+import IconTextCenter from '../../components/molecules/IconTextCenter';
+
+import GlobalAspect from '../../styles/GlobalAspect';
 
 const HomeScreen: React.FC = () => {
   const { state, getNetInfo, wsSendData } = useContext(Context);
@@ -32,23 +35,30 @@ const HomeScreen: React.FC = () => {
       <View style={GlobalStyles.appContainer}>
         <RefreshButton onRefresh={() => getNetInfo()} />
         <View style={GlobalStyles.homeContainer}>
-          {state && state.tradfri.data.length > 0 ? (
-            state.tradfri.data.map((element: any, index: any) => {
-              if (element.type.includes('TRADFRI') && element.label) {
-                return (
-                  <LightSwitch
-                    key={index}
-                    isDisabled={state.notAtHome}
-                    lightStatus={element.on}
-                    name={element.label}
-                    onPress={() => handlePress(element)}
-                  />
-                );
-              }
-            })
-          ) : (
-            <Loading size="large" />
-          )}
+          {state.notAtHome ?
+            <IconTextCenter
+            iconName={'lightbulb-off'}
+            iconColor={GlobalAspect.color.icon.disabled}
+            iconSize={GlobalAspect.icon.size.big}
+            text={'Not conected to home network'} />
+            :
+            state && state.tradfri.data.length > 0 ? (
+              state.tradfri.data.map((element: any, index: any) => {
+                if (element.type.includes('TRADFRI') && element.label) {
+                  return (
+                    <LightSwitch
+                      key={index}
+                      isDisabled={state.notAtHome}
+                      lightStatus={element.on}
+                      name={element.label}
+                      onPress={() => handlePress(element)}
+                    />
+                  );
+                }
+              })
+            ) : (
+              <Loading size="large" />
+            )}
         </View>
       </View>
     </ImageBackground>
