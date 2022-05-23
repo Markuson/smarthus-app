@@ -46,7 +46,7 @@ const MyNavigator: React.FC<Props> = () => {
             let iconName;
 
             if (route.name === 'Home') {
-              iconName = focused ? 'home-lightbulb' : 'home-lightbulb-outline';
+              iconName = 'home-assistant';
             } else if (route.name === 'Settings') {
               iconName = focused ? 'cog' : 'cog-outline';
             } else if (route.name === 'Greenhouse') {

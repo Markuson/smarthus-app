@@ -8,7 +8,8 @@ import Loading from '../../components/atoms/Loading';
 import RefreshButton from '../../components/molecules/refreshButton';
 
 const HomeScreen: React.FC = () => {
-  const { state, data, getNetInfo, mqttPublish } = useGlobalContext();
+  const { state, data, getNetInfo, mqttPublish, mqttUpdate } =
+    useGlobalContext();
 
   const handlePress = async (deviceData: any) => {
     await mqttPublish('set', { id: deviceData.id, on: !deviceData.on });
@@ -21,7 +22,11 @@ const HomeScreen: React.FC = () => {
       style={{ flex: 1, justifyContent: 'center' }}
     >
       <View style={GlobalStyles.appContainer}>
-        <RefreshButton onRefresh={() => getNetInfo()} />
+        <RefreshButton
+          onRefresh={async () => {
+            getNetInfo();
+            await mqttUpdate();
+        }} />
         <View style={GlobalStyles.homeContainer}>
           {!!data.sensors.length &&
             data.sensors.map((element: any, index: any) => {

@@ -11,6 +11,7 @@ export type ContextProps = {
     ssid: string | undefined
   ) => Promise<void>;
   mqttPublish: (action: 'set' | 'rename', message: any) => Promise<void>;
+  mqttUpdate: () => void
 };
 
 const Context = React.createContext({});
@@ -23,6 +24,7 @@ export const ContextProvider: React.FC<ContextProps> = ({
   getNetInfo,
   setNetInfo,
   mqttPublish,
+  mqttUpdate,
 }) => {
   return (
     <Context.Provider
@@ -33,6 +35,7 @@ export const ContextProvider: React.FC<ContextProps> = ({
         getNetInfo,
         setNetInfo,
         mqttPublish,
+        mqttUpdate,
       }}
     >
       {children}

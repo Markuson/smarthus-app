@@ -70,7 +70,6 @@ const App: React.FC = () => {
   };
 
   const handleMqttMessage = (message: smarthusDataType) => {
-    console.log(message.tradfri[0].id);
     setSmarthusData(message);
   };
 
@@ -133,6 +132,7 @@ const App: React.FC = () => {
       getNetInfo={getNetInfo}
       setNetInfo={setNetInfo}
       mqttPublish={handleMqttPublish}
+      mqttUpdate={handleMqttUpdate}
     >
       <MyNavigator />
     </ContextProvider>
