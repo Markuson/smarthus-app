@@ -1,26 +1,17 @@
-import React, { useContext } from 'react';
-import { ImageBackground, View } from 'react-native';
-import { Context } from '../../Context';
-
+import React from 'react';
+import { ImageBackground, View, Text } from 'react-native';
+import { useGlobalContext } from '../../Context';
+import GlobalStyles from '../../styles/GlobalStyles';
+import aspect from '../../styles/GlobalAspect';
 import LightSwitch from '../../components/molecules/LightSwitch';
 import Loading from '../../components/atoms/Loading';
-
-import GlobalStyles from '../../styles/GlobalStyles';
 import RefreshButton from '../../components/molecules/refreshButton';
 
 const HomeScreen: React.FC = () => {
-  const { state, getNetInfo, wsSendData } = useContext(Context);
+  const { state, data, getNetInfo, mqttPublish } = useGlobalContext();
 
-  const handlePress = (deviceData: any) => {
-    // console.log('deviceData: ', deviceData);
-    wsSendData(
-      {
-        name: deviceData.name,
-        id: deviceData.id,
-        on: !deviceData.on,
-      },
-      'send'
-    );
+  const handlePress = async (deviceData: any) => {
+    await mqttPublish('set', { id: deviceData.id, on: !deviceData.on });
   };
   return (
     <ImageBackground
@@ -32,21 +23,29 @@ const HomeScreen: React.FC = () => {
       <View style={GlobalStyles.appContainer}>
         <RefreshButton onRefresh={() => getNetInfo()} />
         <View style={GlobalStyles.homeContainer}>
-          {state && state.tradfri.data.length > 0 ? (
-            state.tradfri.data.map((element: any, index: any) => {
-              if (element.type.includes('TRADFRI') && element.label) {
+          {!!data.sensors.length &&
+            data.sensors.map((element: any, index: any) => {
+              return (
+                <Text style={{ color: aspect.color.textEmphasis }} key={index}>
+                  {element.temperature} ºC
+                </Text>
+              );
+            })}
+          {!!data.tradfri.length &&
+            data.tradfri.map((element: any, index: any) => {
+              if (element.type.includes('TRADFRI') && element.name) {
                 return (
                   <LightSwitch
                     key={index}
                     isDisabled={state.notAtHome}
                     lightStatus={element.on}
-                    name={element.label}
+                    name={element.name}
                     onPress={() => handlePress(element)}
                   />
                 );
               }
-            })
-          ) : (
+            })}
+          {!data.sensors.length && !data.tradfri.length && (
             <Loading size="large" />
           )}
         </View>

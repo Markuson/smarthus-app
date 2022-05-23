@@ -9,6 +9,11 @@ export const initialState: any = {
     data: [],
     timestamp: '',
   },
+  data: {
+    tradfri: [],
+    sensors: [],
+  },
+  groups: [],
   greenhouse: {},
 };
 
@@ -33,6 +38,11 @@ export const reducer = (state: any, action: any) => {
       return {
         ...state,
         tradfri: action.payload,
+      };
+    case 'SET_DATA':
+      return {
+        ...state,
+        data: action.payload,
       };
     // case 'GREENHOUSE':
     //   return {

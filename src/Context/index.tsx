@@ -1,35 +1,43 @@
-import React from 'react';
-import { initialState, reducer } from '../redux';
+import React, { useContext } from 'react';
+import { smarthusDataType } from '../types';
 
-export type Props = {
+export type ContextProps = {
+  data: smarthusDataType;
   dispatch: any;
   state: any;
-  getNetInfo: any;
-  wsSendData: any;
-  setNetInfo: any;
+  getNetInfo: () => void;
+  setNetInfo: (
+    serverIp: string | undefined,
+    ssid: string | undefined
+  ) => Promise<void>;
+  mqttPublish: (action: 'set' | 'rename', message: any) => Promise<void>;
 };
 
-export const Context = React.createContext({});
+const Context = React.createContext({});
 
-export const ContextProvider: React.FC<Props> = ({
+export const ContextProvider: React.FC<ContextProps> = ({
   children,
+  data,
   dispatch,
   state,
   getNetInfo,
-  wsSendData,
   setNetInfo,
+  mqttPublish,
 }) => {
   return (
     <Context.Provider
       value={{
+        data,
         state,
         dispatch,
         getNetInfo,
-        wsSendData,
         setNetInfo,
+        mqttPublish,
       }}
     >
       {children}
     </Context.Provider>
   );
 };
+
+export const useGlobalContext = () => useContext(Context);

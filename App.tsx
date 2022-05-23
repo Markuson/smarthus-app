@@ -1,21 +1,25 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { Alert } from 'react-native';
-import LocationPermission from './src/utils/Permisions';
 import { fetch as netinfoFetch } from '@react-native-community/netinfo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initialState, reducer } from './src/redux';
 import { ContextProvider } from './src/Context';
 import MyNavigator from './src/Navigation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-let ws: any;
+import LocationPermission from './src/utils/Permisions';
+import { smarthusDataType } from './src/types';
+import { MQTT } from './src/utils/mqttClient';
 
 const App: React.FC = () => {
+  const mqttClient = new MQTT();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [devicesChecked, setDevicesChecked] = useState(false);
+  const [smarthusData, setSmarthusData] = useState<smarthusDataType>({
+    sensors: [],
+    tradfri: [],
+  });
 
   useEffect(() => {
     (async () => {
-      let checkPermission = await LocationPermission.request();
+      let checkPermission = await LocationPermission.check();
       if (checkPermission === false) {
         Alert.alert(
           'Permission needed',
@@ -23,21 +27,12 @@ const App: React.FC = () => {
         );
       } else {
         getNetInfo();
-        setWSconnection();
       }
+      handleMqttInit();
+      handleMqttUpdate();
     })();
-    return () => {
-      if (ws) {
-        ws.close();
-      }
-    };
+    (async () => {})();
   }, []);
-
-  useEffect(() => {
-    if (!devicesChecked && state.tradfri.data.length) {
-      checkDevices();
-    }
-  }, [state.tradfri]);
 
   useEffect(() => {
     state.ssid === state.homeNetwork.ssid
@@ -51,16 +46,6 @@ const App: React.FC = () => {
         });
   }, [state.ssid, state.homeNetwork.ssid]);
 
-  const checkDevices = () => {
-    if (state.tradfri.data.some((device: any) => !device.label)) {
-      Alert.alert(
-        'New element detected',
-        'we detected a new element in you tradfri system, put name to it on configuration folder'
-      );
-    }
-    setDevicesChecked(true);
-  };
-
   const getNetInfo = async () => {
     const netInfo: any = await netinfoFetch();
     netInfo && netInfo.type === 'wifi'
@@ -72,6 +57,33 @@ const App: React.FC = () => {
           type: 'SET_ACTUAL_SSID',
           payload: netInfo.details.ssid,
         });
+  };
+
+  const handleMqttInit = () => {
+    mqttClient.init(error => console.error('ERROR ON MQTT INIIT: ', error));
+    mqttClient.subscribe(undefined, handleMqttMessage, error =>
+      handleMqttError(`ERROR ON MQTT SUBSCRIBE: ${error}`)
+    );
+  };
+  const handleMqttError = (message: string) => {
+    console.error(message);
+  };
+
+  const handleMqttMessage = (message: smarthusDataType) => {
+    console.log(message.tradfri[0].id);
+    setSmarthusData(message);
+  };
+
+  const handleMqttPublish = async (action: 'set' | 'rename', message: any) => {
+    await mqttClient.publish(action, message, error =>
+      handleMqttError(`ERROR ON MQTT PUBLISH: ${error}`)
+    );
+  };
+
+  const handleMqttUpdate = async () => {
+    await mqttClient.update(error =>
+      handleMqttError(`ERROR ON MQTT UPDATE: ${error}`)
+    );
   };
 
   const setNetInfo = async (
@@ -105,15 +117,6 @@ const App: React.FC = () => {
         type: 'SET_HOME_NETWORK',
         payload: homeNetwork,
       });
-      if (homeNetwork.serverIp) {
-        ws = new WebSocket(`ws://${homeNetwork.serverIp}:1880/ws/smarthus`);
-        wsCreateListener();
-      } else {
-        Alert.alert(
-          'Network not set',
-          'You need to set the network on the settings menu to be able to use smarhus.'
-        );
-      }
     } else {
       Alert.alert(
         'Network not set',
@@ -122,41 +125,14 @@ const App: React.FC = () => {
     }
   };
 
-  const wsCreateListener = () => {
-    ws.onopen = () => wsSendData({}, 'get');
-    ws.onmessage = (event: any) => {
-      // console.log('event: ', JSON.parse(event.data));
-      dispatch({
-        type: 'SET_TRADFRI_DATA',
-        payload: JSON.parse(event.data),
-      });
-    };
-  };
-
-  const wsSendData = (
-    data: any,
-    request: 'get' | 'send' | 'name',
-    device: 'tradfri' | 'greenhouse' = 'tradfri'
-  ) => {
-    if (ws) {
-      ws.send(
-        JSON.stringify({
-          timestamp: new Date().toLocaleString(),
-          request,
-          device,
-          data,
-        })
-      );
-    }
-  };
-
   return (
     <ContextProvider
+      data={smarthusData}
       dispatch={dispatch}
       state={state}
       getNetInfo={getNetInfo}
-      wsSendData={wsSendData}
       setNetInfo={setNetInfo}
+      mqttPublish={handleMqttPublish}
     >
       <MyNavigator />
     </ContextProvider>

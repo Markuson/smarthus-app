@@ -10,12 +10,15 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@aws-amplify/pubsub": "^4.4.1",
     "@react-native-async-storage/async-storage": "^1.15.7",
     "@react-native-community/netinfo": "^6.0.2",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
+    "aws-amplify": "^4.3.22",
     "react": "17.0.2",
     "react-native": "0.65.1",
+    "react-native-dotenv": "^3.3.1",
     "react-native-prompt-android": "^1.1.0",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.3.0",

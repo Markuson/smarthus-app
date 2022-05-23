@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import { Context } from '../../Context';
+import { useGlobalContext } from '../../Context';
 
 import TradfriSettings from '../../components/organisms/TradfriSettings';
 import NetworkSettings from '../../components/organisms/NetworkSettings';
@@ -8,8 +8,7 @@ import NetworkSettings from '../../components/organisms/NetworkSettings';
 import GlobalStyles from '../../styles/GlobalStyles';
 
 const SettingsScreen: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { state, setNetInfo, wsSendData } = useContext(Context);
+  const { state, setNetInfo, wsSendData } = useGlobalContext();
 
   return (
     <View style={GlobalStyles.appContainer}>
