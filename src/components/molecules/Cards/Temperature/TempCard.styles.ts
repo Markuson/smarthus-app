@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import GlobalAspect from '../../../styles/GlobalAspect';
+import GlobalAspect from '../../../../styles/GlobalAspect';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
     paddingTop: wp('2%'),
     width: '100%',
   },
-  tempText: {
+  dataText: {
     color: color.textNormal,
     fontFamily: font.numericLight,
-    fontSize: font.size.big,
+    fontSize: font.size.medium,
     paddingLeft: wp('3%'),
   },
   topSection: {

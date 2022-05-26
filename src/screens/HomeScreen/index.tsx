@@ -3,11 +3,10 @@ import { ImageBackground, View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import GlobalStyles from '../../styles/GlobalStyles';
-import aspect from '../../styles/GlobalAspect';
-import LightSwitch from '../../components/molecules/LightSwitch';
 import Loading from '../../components/atoms/Loading';
-import Card from '../../components/atoms/Card';
-import TempCard from '../../components/molecules/TempCard';
+import TempCard from '../../components/molecules/Cards/Temperature';
+import LightCard from '../../components/molecules/Cards/Light';
+import prompt from 'react-native-prompt-android';
 
 const HomeScreen: React.FC = () => {
   const notAtHome = useSelector((state: RootState) => state.notAtHome);
@@ -19,6 +18,31 @@ const HomeScreen: React.FC = () => {
       console.error(`ERROR ON MQTT PUBLISH: ${error}`)
     );
   };
+  const handleRename = async (id: string, oldName: string) => {
+    prompt(
+      'Rename element',
+      'Enter the new name',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'OK',
+          onPress: async (name: string) => {
+            if (name && name !== '') {
+              await mqttClient.publish('rename', { id, name }, (error: any) =>
+                console.error(`ERROR ON MQTT PUBLISH: ${error}`)
+              );
+            }
+          },
+        },
+      ],
+      {
+        cancelable: false,
+        defaultValue: '',
+        placeholder: oldName,
+      }
+    );
+  };
+
   return (
     <ImageBackground
       source={require('../../../assets/background1.png')}
@@ -30,23 +54,32 @@ const HomeScreen: React.FC = () => {
         <View style={GlobalStyles.homeContainer}>
           {!!data?.sensors?.length &&
             data.sensors.map((element: any, index: any) => {
-              return <TempCard temperature={element.temperature} />;
+              return (
+                <TempCard
+                  key={index}
+                  name={element.name}
+                  humidity={element.humidity}
+                  temperature={element.temperature}
+                  onRename={() => handleRename(element.id, element.name)}
+                />
+              );
             })}
           {!!data?.tradfri?.length &&
             data.tradfri.map((element: any, index: any) => {
-              if (element.type.includes('TRADFRI') && element.name) {
+              if (element.type.includes('TRADFRI')) {
                 return (
-                  <LightSwitch
+                  <LightCard
                     key={index}
-                    isDisabled={notAtHome}
-                    lightStatus={element.on}
+                    disabled={notAtHome}
                     name={element.name}
-                    onPress={() =>
+                    onRename={() => handleRename(element.id, element.name)}
+                    onSwitch={() =>
                       handleMqttPublish('set', {
                         id: element.id,
                         on: !element.on,
                       })
                     }
+                    status={element.on}
                   />
                 );
               }

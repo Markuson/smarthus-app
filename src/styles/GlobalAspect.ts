@@ -60,7 +60,7 @@ export default {
     fullWidth: wp('100%'),
     fullHeigth: hp('100%'),
     switchButton: {
-      height: hp('10%'),
+      height: wp('22%'),
       width: wp('90%'),
       radius: hp('0.5%'),
     },
@@ -75,8 +75,16 @@ export default {
       radius: hp('1%'),
     },
     card: {
-      height: wp('44%'),
-      width: wp('44%'),
+      height: {
+        w1h2: wp('44%'),
+        w2h2: wp('44%'),
+        w2h1: wp('22%'),
+      },
+      width: {
+        w1h2: wp('44%'),
+        w2h2: wp('90%'),
+        w2h1: wp('90%'),
+      },
       radius: hp('0.5%'),
     },
   },
