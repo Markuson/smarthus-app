@@ -1,18 +1,23 @@
 import React from 'react';
 import { ImageBackground, View, Text } from 'react-native';
-import { useGlobalContext } from '../../Context';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 import GlobalStyles from '../../styles/GlobalStyles';
 import aspect from '../../styles/GlobalAspect';
 import LightSwitch from '../../components/molecules/LightSwitch';
 import Loading from '../../components/atoms/Loading';
-import RefreshButton from '../../components/molecules/refreshButton';
+import Card from '../../components/atoms/Card';
+import TempCard from '../../components/molecules/TempCard';
 
 const HomeScreen: React.FC = () => {
-  const { state, data, getNetInfo, mqttPublish, mqttUpdate } =
-    useGlobalContext();
+  const notAtHome = useSelector((state: RootState) => state.notAtHome);
+  const data = useSelector((state: RootState) => state.data);
+  const mqttClient = useSelector((state: RootState) => state.mqttClient);
 
-  const handlePress = async (deviceData: any) => {
-    await mqttPublish('set', { id: deviceData.id, on: !deviceData.on });
+  const handleMqttPublish = async (action: 'set' | 'rename', message: any) => {
+    await mqttClient.publish(action, message, (error: any) =>
+      console.error(`ERROR ON MQTT PUBLISH: ${error}`)
+    );
   };
   return (
     <ImageBackground
@@ -22,35 +27,31 @@ const HomeScreen: React.FC = () => {
       style={{ flex: 1, justifyContent: 'center' }}
     >
       <View style={GlobalStyles.appContainer}>
-        <RefreshButton
-          onRefresh={async () => {
-            getNetInfo();
-            await mqttUpdate();
-        }} />
         <View style={GlobalStyles.homeContainer}>
-          {!!data.sensors.length &&
+          {!!data?.sensors?.length &&
             data.sensors.map((element: any, index: any) => {
-              return (
-                <Text style={{ color: aspect.color.textEmphasis }} key={index}>
-                  {element.temperature} ºC
-                </Text>
-              );
+              return <TempCard temperature={element.temperature} />;
             })}
-          {!!data.tradfri.length &&
+          {!!data?.tradfri?.length &&
             data.tradfri.map((element: any, index: any) => {
               if (element.type.includes('TRADFRI') && element.name) {
                 return (
                   <LightSwitch
                     key={index}
-                    isDisabled={state.notAtHome}
+                    isDisabled={notAtHome}
                     lightStatus={element.on}
                     name={element.name}
-                    onPress={() => handlePress(element)}
+                    onPress={() =>
+                      handleMqttPublish('set', {
+                        id: element.id,
+                        on: !element.on,
+                      })
+                    }
                   />
                 );
               }
             })}
-          {!data.sensors.length && !data.tradfri.length && (
+          {!data?.sensors?.length && !data?.tradfri?.length && (
             <Loading size="large" />
           )}
         </View>

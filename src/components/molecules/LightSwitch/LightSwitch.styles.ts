@@ -7,7 +7,7 @@ import {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: hp('2%'),
+    marginVertical: wp('0.8%'),
   },
 });
 

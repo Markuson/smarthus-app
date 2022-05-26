@@ -27,7 +27,7 @@ const LightSwitch: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <Button
-        accessibilityLabel={'testButton'}
+        accessibilityLabel={'LightSwitch'}
         buttonColor={color.button}
         buttonFontColor={color.textNormal}
         buttonFontFamily={font.light}

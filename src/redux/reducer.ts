@@ -1,8 +1,6 @@
 export const initialState: any = {
-  homeNetwork: {
-    ssid: 'undefined',
-    serverIp: '0.0.0.0',
-  },
+  homeNetwork: 'undefined',
+  mqttClient: undefined,
   notAtHome: true,
   ssid: '',
   tradfri: {
@@ -29,6 +27,11 @@ export const reducer = (state: any, action: any) => {
         ...state,
         homeNetwork: action.payload,
       };
+    case 'SET_MQTT_CLIENT':
+      return {
+        ...state,
+        mqttClient: action.payload,
+      };
     case 'SET_NOT_AT_HOME':
       return {
         ...state,
@@ -44,10 +47,6 @@ export const reducer = (state: any, action: any) => {
         ...state,
         data: action.payload,
       };
-    // case 'GREENHOUSE':
-    //   return {
-    //     ...state,
-    //   };
     default:
       return state;
   }

@@ -11,10 +11,10 @@ export default {
   color:
     theme === 'dark'
       ? {
-          button: 'rgb(89,89,89)',
+          button: 'rgb(64,64,64)',
           background: 'rgba(24,24,24, 0.5)',
           border: 'darkslategray',
-          card: 'rgb(36,37,38)',
+          card: 'rgb(64,64,64)',
           icon: {
             disabled: 'lightgray',
             enabled: '#ffef96',
@@ -29,7 +29,7 @@ export default {
             opacity: 0.2,
           },
           textEmphasis: 'rgba(255, 255, 255, 0.87)',
-          textNormal: 'rgba(255, 255, 255, 0.6)',
+          textNormal: 'rgba(255, 255, 255, 0.8)',
           textDisabled: 'rgba(255, 255, 255, 0.38)',
         }
       : {
@@ -62,7 +62,7 @@ export default {
     switchButton: {
       height: hp('10%'),
       width: wp('90%'),
-      radius: hp('1%'),
+      radius: hp('0.5%'),
     },
     tradSettingsButton: {
       height: hp('6%'),
@@ -74,6 +74,11 @@ export default {
       width: wp('25%'),
       radius: hp('1%'),
     },
+    card: {
+      height: wp('44%'),
+      width: wp('44%'),
+      radius: hp('0.5%'),
+    },
   },
   font: {
     light: Platform.OS === 'android' ? 'Raleway-Light' : 'Avenir-Light',
@@ -84,6 +89,7 @@ export default {
       normal: hp('2.5%'),
       small: hp('1.8%'),
       xsmall: hp('1.5%'),
+      medium: hp('3.5%'),
       big: hp('4%'),
     },
   },

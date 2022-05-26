@@ -1,36 +1,36 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useGlobalContext } from '../../Context';
-
-import TradfriSettings from '../../components/organisms/TradfriSettings';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../redux/store';
+// import TradfriSettings from '../../components/organisms/TradfriSettings';
 import NetworkSettings from '../../components/organisms/NetworkSettings';
 
 import GlobalStyles from '../../styles/GlobalStyles';
 
 const SettingsScreen: React.FC = () => {
-  const { state, setNetInfo, wsSendData } = useGlobalContext();
+  const ssid = useSelector((state: RootState) => state.ssid);
+  const homeNetwork = useSelector((state: RootState) => state.homeNetwork);
+  const dispatch = useDispatch();
 
+  const setNetInfo = async (_ssid: string) => {
+    dispatch({
+      type: 'SET_HOME_NETWORK',
+      payload: _ssid,
+    });
+  };
   return (
     <View style={GlobalStyles.appContainer}>
       <NetworkSettings
-        actualSsid={state.ssid}
-        homeNetwork={state.homeNetwork}
-        onSetNetInfo={(ip: string | undefined, ssid: string | undefined) =>
-          setNetInfo(ip, ssid)
-        }
+        actualSsid={ssid}
+        homeNetwork={homeNetwork}
+        onSetNetInfo={setNetInfo}
       />
-      <TradfriSettings
+      {/* <TradfriSettings
         devices={state.tradfri.data}
         onNameChange={(id: string, name: string) =>
-          wsSendData(
-            {
-              id,
-              name,
-            },
-            'name'
-          )
+          console.log('NAME CHANGE')
         }
-      />
+      /> */}
     </View>
   );
 };

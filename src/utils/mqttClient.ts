@@ -9,7 +9,6 @@ import {
 } from '@env';
 
 export class MQTT {
-
   init(onError: (error: any) => void) {
     try {
       Amplify.configure({
@@ -56,7 +55,7 @@ export class MQTT {
           onMessage(data.value.data);
         },
         error: error => onError(error),
-        close: () => (console.error('CLOSED')),
+        close: () => console.error('CLOSED'),
       });
     } catch (error) {
       onError(error);

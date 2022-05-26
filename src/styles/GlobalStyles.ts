@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: wp('100%'),
@@ -26,6 +25,8 @@ const styles = StyleSheet.create({
 
   homeContainer: {
     flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
     width: wp('100%'),
@@ -39,21 +40,18 @@ const styles = StyleSheet.create({
     marginTop: hp('2%'),
   },
 
-  smallContainer: {
-    flex: 1,
+  alignCenter: {
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: wp('100%'),
-    marginTop: hp('1%'),
   },
 
   textLine: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: wp('90%'),
-    height: hp('10%'),
+    height: hp('8%'),
   },
 });
 

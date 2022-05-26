@@ -17,10 +17,7 @@ const {
 
 export type Props = {
   actualSsid: string;
-  homeNetwork: {
-    serverIp: string;
-    ssid: string;
-  };
+  homeNetwork: string;
   onSetNetInfo: any;
 };
 
@@ -40,85 +37,38 @@ const NetworkSettings: React.FC<Props> = ({
         },
         {
           text: 'YES',
-          onPress: () => onSetNetInfo(undefined, actualSsid),
+          onPress: () => onSetNetInfo(actualSsid),
         },
       ]
     );
   };
 
-  const PromptChangeIp = () => {
-    prompt(
-      'Server ip:',
-      'Enter the ip of your home server.',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'OK',
-          onPress: ip => onSetNetInfo(ip),
-        },
-      ],
-      {
-        cancelable: true,
-        placeholder: '192.168.XXX.XXX',
-      }
-    );
-  };
-
   return (
-    <View style={GlobalStyles.smallContainer}>
-      <Title text={'Network:'} />
-      <View style={GlobalStyles.mediumContainer}>
-        <View style={GlobalStyles.container}>
-          <View style={GlobalStyles.textLine}>
-            <Text style={styles.text}>Your actual network: </Text>
-            <Text style={styles.text}>{actualSsid}</Text>
-          </View>
+    <View>
+      <View style={GlobalStyles.container}>
+        <Title text={'Home Network:'} />
+        <View style={GlobalStyles.textLine}>
+          <Text style={styles.text}>Your actual network: </Text>
+          <Text style={styles.text}>{actualSsid}</Text>
         </View>
-        <View style={GlobalStyles.container}>
-          <View style={GlobalStyles.textLine}>
-            <Text style={styles.text}>Your home network: </Text>
-            <Text style={styles.text}>{homeNetwork.ssid}</Text>
-          </View>
-        </View>
-        <View style={GlobalStyles.smallContainer}>
-          <Button
-            accessibilityLabel={'setNetworkButton'}
-            buttonColor={color.button}
-            buttonFontColor={color.textNormal}
-            buttonFontFamily={font.light}
-            buttonFontSize={font.size.small}
-            buttonHeight={netSettingsButton.height}
-            buttonRadius={netSettingsButton.radius}
-            buttonWidth={netSettingsButton.width}
-            onPress={() => setNetwork()}
-            title={'Set Network'}
-          />
+        <View style={GlobalStyles.textLine}>
+          <Text style={styles.text}>Your home network: </Text>
+          <Text style={styles.text}>{homeNetwork}</Text>
         </View>
       </View>
-      <View style={GlobalStyles.mediumContainer}>
-        <View style={GlobalStyles.container}>
-          <View style={GlobalStyles.textLine}>
-            <Text style={styles.text}>Your server Ip: </Text>
-            <Text style={styles.text}>{homeNetwork.serverIp}</Text>
-          </View>
-        </View>
-        <View style={GlobalStyles.smallContainer}>
-          <Button
-            accessibilityLabel={'changeIpButton'}
-            buttonColor={color.button}
-            buttonFontColor={color.textNormal}
-            buttonFontFamily={font.light}
-            buttonFontSize={font.size.small}
-            buttonHeight={netSettingsButton.height}
-            buttonRadius={netSettingsButton.radius}
-            buttonWidth={netSettingsButton.width}
-            onPress={() => PromptChangeIp()}
-            title={'Set IP'}
-          />
-        </View>
+      <View style={GlobalStyles.alignCenter}>
+        <Button
+          accessibilityLabel={'setNetworkButton'}
+          buttonColor={color.button}
+          buttonFontColor={color.textNormal}
+          buttonFontFamily={font.light}
+          buttonFontSize={font.size.small}
+          buttonHeight={netSettingsButton.height}
+          buttonRadius={netSettingsButton.radius}
+          buttonWidth={netSettingsButton.width}
+          onPress={() => setNetwork()}
+          title={'Set Network'}
+        />
       </View>
     </View>
   );
