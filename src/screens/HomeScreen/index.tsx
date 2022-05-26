@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, View, Text } from 'react-native';
+import { ImageBackground, View, Vibration } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import GlobalStyles from '../../styles/GlobalStyles';
@@ -19,6 +19,7 @@ const HomeScreen: React.FC = () => {
     );
   };
   const handleRename = async (id: string, oldName: string) => {
+    Vibration.vibrate(50);
     prompt(
       'Rename element',
       'Enter the new name',
@@ -50,45 +51,49 @@ const HomeScreen: React.FC = () => {
       // eslint-disable-next-line react-native/no-inline-styles
       style={{ flex: 1, justifyContent: 'center' }}
     >
-      <View style={GlobalStyles.appContainer}>
-        <View style={GlobalStyles.homeContainer}>
-          {!!data?.sensors?.length &&
-            data.sensors.map((element: any, index: any) => {
-              return (
-                <TempCard
-                  key={index}
-                  name={element.name}
-                  humidity={element.humidity}
-                  temperature={element.temperature}
-                  onRename={() => handleRename(element.id, element.name)}
-                />
-              );
-            })}
-          {!!data?.tradfri?.length &&
-            data.tradfri.map((element: any, index: any) => {
-              if (element.type.includes('TRADFRI')) {
+      {(data?.sensors?.length || data?.tradfri?.length) && (
+        <View style={GlobalStyles.appContainer}>
+          <View style={GlobalStyles.homeContainer}>
+            {!!data?.sensors?.length &&
+              data.sensors.map((element: any, index: any) => {
                 return (
-                  <LightCard
+                  <TempCard
                     key={index}
-                    disabled={notAtHome}
                     name={element.name}
+                    humidity={element.humidity}
+                    temperature={element.temperature}
                     onRename={() => handleRename(element.id, element.name)}
-                    onSwitch={() =>
-                      handleMqttPublish('set', {
-                        id: element.id,
-                        on: !element.on,
-                      })
-                    }
-                    status={element.on}
                   />
                 );
-              }
-            })}
-          {!data?.sensors?.length && !data?.tradfri?.length && (
-            <Loading size="large" />
-          )}
+              })}
+            {!!data?.tradfri?.length &&
+              data.tradfri.map((element: any, index: any) => {
+                if (element.type.includes('TRADFRI')) {
+                  return (
+                    <LightCard
+                      key={index}
+                      disabled={notAtHome}
+                      name={element.name}
+                      onRename={() => handleRename(element.id, element.name)}
+                      onSwitch={() =>
+                        handleMqttPublish('set', {
+                          id: element.id,
+                          on: !element.on,
+                        })
+                      }
+                      status={element.on}
+                    />
+                  );
+                }
+              })}
+          </View>
         </View>
-      </View>
+      )}
+      {!data?.sensors?.length && !data?.tradfri?.length && (
+        <View style={GlobalStyles.homeContainer}>
+          <Loading size="large" />
+        </View>
+      )}
     </ImageBackground>
   );
 };
