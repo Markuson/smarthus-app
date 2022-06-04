@@ -42,7 +42,7 @@ export default {
             enabled: '#ffef96',
           },
           notification: 'tomato',
-          primary: 'darkolivegreen',
+          primary: '#008000',
           text: 'rgb(24,25,26)',
           shadow: {
             elevation: 4,
