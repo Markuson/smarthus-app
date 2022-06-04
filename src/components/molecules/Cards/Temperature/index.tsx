@@ -97,6 +97,7 @@ const TempCard: React.FC<Props> = ({
         </View>
       )}
     </Card>
+
   );
 };
 export default TempCard;

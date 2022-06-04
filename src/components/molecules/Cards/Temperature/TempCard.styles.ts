@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
+    zIndex: 10,
+    elevation: 10,
   },
   middleSection: {
     flex: 3,
