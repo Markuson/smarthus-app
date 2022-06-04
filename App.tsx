@@ -74,7 +74,11 @@ const App: React.FC = () => {
   const handleMqttMessage = (message: smarthusDataType) => {
     dispatch({
       type: 'SET_DATA',
-      payload: message,
+      payload: message.data,
+    });
+    dispatch({
+      type: 'SET_TIME',
+      payload: message.timestamp,
     });
   };
 

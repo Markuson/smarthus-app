@@ -5,12 +5,13 @@ export const initialState: any = {
   ssid: '',
   tradfri: {
     data: [],
-    timestamp: '',
+
   },
   data: {
     tradfri: [],
     sensors: [],
   },
+  timestamp: '',
   groups: [],
   greenhouse: {},
 };
@@ -46,6 +47,11 @@ export const reducer = (state: any, action: any) => {
       return {
         ...state,
         data: action.payload,
+      };
+    case 'SET_TIME':
+      return {
+        ...state,
+        timestamp: action.payload,
       };
     default:
       return state;

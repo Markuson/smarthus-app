@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: wp('100%'),
+    paddingTop: wp('5%'),
   },
 
   container: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: wp('4%'),
     width: wp('100%'),
-    paddingTop: wp('5%'),
+    paddingTop: wp('1%'),
   },
   loadingContainer: {
     flex: 1,

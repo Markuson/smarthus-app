@@ -1,4 +1,7 @@
 export type smarthusDataType = {
-  sensors: any[];
-  tradfri: any[];
+  data: {
+    sensors: any[];
+    tradfri: any[];
+  };
+  timestamp: string;
 };

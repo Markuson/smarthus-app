@@ -20,7 +20,7 @@ export default {
             enabled: '#ffef96',
           },
           notification: 'red',
-          primary: 'lightgreen',
+          primary: '#1fc71f',
           shadow: {
             elevation: 4,
             offset: { width: 5, height: 5 },

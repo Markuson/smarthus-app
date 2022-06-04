@@ -52,7 +52,8 @@ export class MQTT {
     try {
       PubSub.subscribe(topic).subscribe({
         next: data => {
-          onMessage(data.value.data);
+          console.log('DATA: ', data)
+          onMessage(data.value);
         },
         error: error => onError(error),
         close: () => console.error('CLOSED'),
