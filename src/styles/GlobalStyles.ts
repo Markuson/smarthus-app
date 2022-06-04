@@ -28,11 +28,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: wp('4%'),
     width: wp('100%'),
     paddingTop: wp('5%'),
   },
-
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   mediumContainer: {
     flex: 1,
     alignItems: 'center',

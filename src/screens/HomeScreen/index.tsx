@@ -5,6 +5,7 @@ import { RootState } from '../../redux/store';
 import GlobalStyles from '../../styles/GlobalStyles';
 import Loading from '../../components/atoms/Loading';
 import TempCard from '../../components/molecules/Cards/Temperature';
+import WeatherCard from '../../components/molecules/Cards/Weather';
 import LightCard from '../../components/molecules/Cards/Light';
 import prompt from 'react-native-prompt-android';
 
@@ -56,15 +57,40 @@ const HomeScreen: React.FC = () => {
           <View style={GlobalStyles.homeContainer}>
             {!!data?.sensors?.length &&
               data.sensors.map((element: any, index: any) => {
-                return (
-                  <TempCard
-                    key={index}
-                    name={element.name}
-                    humidity={element.humidity}
-                    temperature={element.temperature}
-                    onRename={() => handleRename(element.id, element.name)}
-                  />
-                );
+                if (element.temperature && !element.presure) {
+                  return (
+                    <TempCard
+                      key={index}
+                      name={element.name ? element.name : 'UNNAMED'}
+                      humidity={element.humidity}
+                      hlog={element.hlog ? element.hlog : undefined}
+                      hlogColor={'#3385ff'}
+                      tlog={element.tlog ? element.tlog : undefined}
+                      tlogColor={'#ff8533'}
+                      temperature={element.temperature}
+                      onRename={() => handleRename(element.id, element.name)}
+                    />
+                  );
+                }
+                if (element.temperature && element.presure) {
+                  return (
+                    <WeatherCard
+                      key={index}
+                      name={element.name ? element.name : 'UNNAMED'}
+                      humidity={element.humidity}
+                      hlog={element.hlog ? element.hlog : undefined}
+                      hlogColor={'#3385ff'}
+                      temperature={element.temperature}
+                      tlog={element.tlog ? element.tlog : undefined}
+                      tlogColor={'#ff8533'}
+                      pressure={element.presure}
+                      plog={element.plog ? element.plog : undefined}
+                      plogColor={'#ace600'}
+                      altitude={element.altitude}
+                      onRename={() => handleRename(element.id, element.name)}
+                    />
+                  );
+                }
               })}
             {!!data?.tradfri?.length &&
               data.tradfri.map((element: any, index: any) => {
@@ -90,7 +116,7 @@ const HomeScreen: React.FC = () => {
         </View>
       )}
       {!data?.sensors?.length && !data?.tradfri?.length && (
-        <View style={GlobalStyles.homeContainer}>
+        <View style={GlobalStyles.loadingContainer}>
           <Loading size="large" />
         </View>
       )}

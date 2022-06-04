@@ -43,8 +43,9 @@ const styles = StyleSheet.create({
   },
   middleSection: {
     flex: 3,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   bottomSection: {
     flex: 2,

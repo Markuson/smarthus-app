@@ -3,17 +3,21 @@ import React from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import aspect from '../../../../styles/GlobalAspect';
-import styles from './TempCard.styles';
+import styles from './WeatherCard.styles';
 import Card from '../../../atoms/Card';
 import Chart from '../../../atoms/Chart';
 
 export type Props = {
-  temperature: string;
+  temperature: number;
   tlog?: number[];
   tlogColor?: string;
   humidity?: string;
   hlog?: number[];
   hlogColor?: string;
+  pressure: string;
+  plog?: number[];
+  plogColor?: string;
+  altitude: string;
   name: string;
   onRename: () => void;
 };
@@ -26,20 +30,24 @@ const {
   },
 } = aspect;
 
-const TempCard: React.FC<Props> = ({
-  humidity,
-  hlog,
-  hlogColor,
+const WeatherCard: React.FC<Props> = ({
   temperature,
   tlog,
   tlogColor,
+  humidity,
+  hlog,
+  hlogColor,
+  pressure,
+  plog,
+  plogColor,
+  altitude,
   name,
   onRename,
 }) => {
   return (
     <Card
-      accessibilityLabel={'TemperatureCard'}
-      cardSize={{ w: w.w1h2, h: h.w1h2 }}
+      accessibilityLabel={'WeatherCard'}
+      cardSize={{ w: w.w2h2, h: h.w2h2 }}
     >
       <View style={styles.topSection}>
         <View style={styles.row}>
@@ -71,16 +79,32 @@ const TempCard: React.FC<Props> = ({
               <Text style={[styles.unitText, { color: hlogColor }]}> %</Text>
             </View>
           )}
+          {pressure && (
+            <View style={styles.textRow}>
+              <Text numberOfLines={1} style={styles.dataText}>
+                {pressure}
+              </Text>
+              <Text style={[styles.unitText, { color: plogColor }]}> hPa</Text>
+            </View>
+          )}
+          {altitude && (
+            <View style={styles.textRow}>
+              <Text numberOfLines={1} style={styles.dataText}>
+                {altitude}
+              </Text>
+              <Text style={styles.unitText}> m</Text>
+            </View>
+          )}
         </View>
-        <View style={styles.bottomSection} />
       </View>
+      <View style={styles.bottomSection} />
       {!!hlog && (
         <View style={[styles.chart, { zIndex: 2, elevation: 2 }]}>
           <Chart
             color={hlogColor}
             chartData={hlog}
             accessibilityLabel="Chart"
-            size={{ w: w.w1h2, h: h.w1h2 }}
+            size={{ w: w.w2h2, h: h.w2h2 }}
             domain={{ x: { min: 0, max: 23 }, y: { min: 0, max: 100 } }}
           />
         </View>
@@ -91,12 +115,23 @@ const TempCard: React.FC<Props> = ({
             color={tlogColor}
             chartData={tlog}
             accessibilityLabel="Chart2"
-            size={{ w: w.w1h2, h: h.w1h2 }}
+            size={{ w: w.w2h2, h: h.w2h2 }}
             domain={{ x: { min: 0, max: 23 }, y: { min: -20, max: 40 } }}
+          />
+        </View>
+      )}
+      {!!plog && (
+        <View style={[styles.chart, { zIndex: 3, elevation: 3 }]}>
+          <Chart
+            color={plogColor}
+            chartData={plog}
+            accessibilityLabel="Chart3"
+            size={{ w: w.w2h2, h: h.w2h2 }}
+            domain={{ x: { min: 0, max: 23 }, y: { min: 1000, max: 1050 } }}
           />
         </View>
       )}
     </Card>
   );
 };
-export default TempCard;
+export default WeatherCard;

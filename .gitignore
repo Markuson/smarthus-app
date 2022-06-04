@@ -62,4 +62,4 @@ android/
 # CocoaPods
 /ios/Pods/
 
-.env
+.env*

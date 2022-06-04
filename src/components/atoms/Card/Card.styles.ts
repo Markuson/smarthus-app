@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     borderRadius: card.radius,
     height: card.height.w1h2,
     width: card.width.w1h2,
-    margin: wp('0.8%'),
+    margin: wp('1%'),
     elevation: 4,
     shadowColor: 'rgba(255, 255, 255, 0.38)',
     shadowOffset: { width: 5, height: 5 },

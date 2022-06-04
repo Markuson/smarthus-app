@@ -39,7 +39,7 @@ const App: React.FC = () => {
   }, [mqttClient]);
 
   useEffect(() => {
-    ssid === homeNetwork
+    ssid === homeNetwork && homeNetwork !== undefined
       ? dispatch({
           type: 'SET_NOT_AT_HOME',
           payload: false,

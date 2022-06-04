@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ImageBackground, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
 // import TradfriSettings from '../../components/organisms/TradfriSettings';
@@ -19,19 +19,26 @@ const SettingsScreen: React.FC = () => {
     });
   };
   return (
-    <View style={GlobalStyles.appContainer}>
-      <NetworkSettings
-        actualSsid={ssid}
-        homeNetwork={homeNetwork}
-        onSetNetInfo={setNetInfo}
-      />
-      {/* <TradfriSettings
-        devices={state.tradfri.data}
-        onNameChange={(id: string, name: string) =>
-          console.log('NAME CHANGE')
-        }
-      /> */}
-    </View>
+    <ImageBackground
+      source={require('../../../assets/background2.png')}
+      resizeMode="cover"
+      // eslint-disable-next-line react-native/no-inline-styles
+      style={{ flex: 1, justifyContent: 'center' }}
+    >
+      <View style={GlobalStyles.appContainer}>
+        <NetworkSettings
+          actualSsid={ssid}
+          homeNetwork={homeNetwork}
+          onSetNetInfo={setNetInfo}
+        />
+        {/* <TradfriSettings
+          devices={state.tradfri.data}
+          onNameChange={(id: string, name: string) =>
+            console.log('NAME CHANGE')
+          }
+        /> */}
+      </View>
+    </ImageBackground>
   );
 };
 
