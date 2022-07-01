@@ -98,7 +98,7 @@ const WeatherCard: React.FC<Props> = ({
         </View>
       </View>
       <View style={styles.bottomSection} />
-      {!!hlog && (
+      {!!hlog && hlog.length >= 2 && (
         <View style={[styles.chart, { zIndex: 2, elevation: 2 }]}>
           <Chart
             color={hlogColor}
@@ -109,7 +109,7 @@ const WeatherCard: React.FC<Props> = ({
           />
         </View>
       )}
-      {!!tlog && (
+      {!!tlog && tlog.length >= 2 && (
         <View style={[styles.chart]}>
           <Chart
             color={tlogColor}
@@ -120,7 +120,7 @@ const WeatherCard: React.FC<Props> = ({
           />
         </View>
       )}
-      {!!plog && (
+      {!!plog && plog.length >= 2 && (
         <View style={[styles.chart, { zIndex: 3, elevation: 3 }]}>
           <Chart
             color={plogColor}
