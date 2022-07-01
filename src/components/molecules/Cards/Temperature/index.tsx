@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import aspect from '../../../../styles/GlobalAspect';
@@ -74,7 +74,7 @@ const TempCard: React.FC<Props> = ({
         </View>
         <View style={styles.bottomSection} />
       </View>
-      {!!hlog && (
+      {!!hlog && hlog.length >= 2 && (
         <View style={[styles.chart, { zIndex: 2, elevation: 2 }]}>
           <Chart
             color={hlogColor}
@@ -85,7 +85,7 @@ const TempCard: React.FC<Props> = ({
           />
         </View>
       )}
-      {!!tlog && (
+      {!!tlog && tlog.length >= 2 && (
         <View style={[styles.chart]}>
           <Chart
             color={tlogColor}
@@ -97,7 +97,6 @@ const TempCard: React.FC<Props> = ({
         </View>
       )}
     </Card>
-
   );
 };
 export default TempCard;

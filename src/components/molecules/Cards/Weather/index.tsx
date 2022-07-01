@@ -87,7 +87,7 @@ const WeatherCard: React.FC<Props> = ({
               <Text style={[styles.unitText, { color: plogColor }]}> hPa</Text>
             </View>
           )}
-          {altitude && (
+          {false && altitude && (
             <View style={styles.textRow}>
               <Text numberOfLines={1} style={styles.dataText}>
                 {altitude}

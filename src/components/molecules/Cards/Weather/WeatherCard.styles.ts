@@ -44,10 +44,10 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   middleSection: {
+    width: wp('90%'),
     flex: 3,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignItems: 'center',
   },
   bottomSection: {
     flex: 2,

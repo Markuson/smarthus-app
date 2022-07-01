@@ -42,8 +42,8 @@ const ChartElement: React.FC<Props> = ({
       <Area
         theme={{
           gradient: {
-            from: { color },
-            to: { color, opacity: 0.1 },
+            from: { color, opacity: 0.3 },
+            to: { color, opacity: 0 },
           },
         }}
       />

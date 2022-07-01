@@ -34,7 +34,6 @@ const SettingsScreen: React.FC = () => {
         {/* <TradfriSettings
           devices={state.tradfri.data}
           onNameChange={(id: string, name: string) =>
-            console.log('NAME CHANGE')
           }
         /> */}
       </View>

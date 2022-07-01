@@ -23,6 +23,8 @@
     "react-native-prompt-android": "^1.1.0",
     "react-native-responsive-linechart": "^5.7.1",
     "react-native-responsive-screen": "^1.4.2",
+    "react-native-root-siblings": "^4.1.1",
+    "react-native-root-toast": "^3.4.0",
     "react-native-safe-area-context": "^3.3.0",
     "react-native-screens": "^3.6.0",
     "react-native-svg": "^12.3.0",

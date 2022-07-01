@@ -21,32 +21,14 @@ const HomeScreen: React.FC = () => {
   const notAtHome = useSelector((state: RootState) => state.notAtHome);
   const data = useSelector((state: RootState) => state.data);
   const timestamp = useSelector((state: RootState) => state.timestamp);
-  const mqttClient = useSelector((state: RootState) => state.mqttClient);
 
   useEffect(() => {
     if (refreshing) {
       setRefreshing(false);
     }
-    console.log(timestamp);
   }, [data]);
 
   const [refreshing, setRefreshing] = useState(false);
-  const handleMqttPublish = async (action: 'set' | 'rename', message: any) => {
-    await mqttClient.publish(action, message, (error: any) =>
-      console.error(`ERROR ON MQTT PUBLISH: ${error}`)
-    );
-  };
-
-  const handleMqttUpdate = async () => {
-    setRefreshing(true);
-    await mqttClient.update((error: any) => () => {
-      handleMqttError(`ERROR ON MQTT UPDATE: ${error}`);
-    });
-  };
-
-  const handleMqttError = (message: string) => {
-    console.error(message);
-  };
 
   const handleRename = async (id: string, oldName: string) => {
     Vibration.vibrate(50);
@@ -59,9 +41,7 @@ const HomeScreen: React.FC = () => {
           text: 'OK',
           onPress: async (name: string) => {
             if (name && name !== '') {
-              await mqttClient.publish('rename', { id, name }, (error: any) =>
-                console.error(`ERROR ON MQTT PUBLISH: ${error}`)
-              );
+              await global.mqttPublish('rename', { id, name });
             }
           },
         },
@@ -82,11 +62,12 @@ const HomeScreen: React.FC = () => {
       style={{ flex: 1, justifyContent: 'center' }}
     >
       <ScrollView
+        // eslint-disable-next-line react-native/no-inline-styles
         contentContainerStyle={{ flex: 1, justifyContent: 'center' }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={handleMqttUpdate}
+            onRefresh={() => global.mqttUpdate()}
           />
         }
       >
@@ -102,9 +83,9 @@ const HomeScreen: React.FC = () => {
                         key={index}
                         name={element.name ? element.name : 'UNNAMED'}
                         humidity={element.humidity}
-                        hlog={element.hlog ? element.hlog : undefined}
+                        hlog={element.hlog ? element.hlog : []}
                         hlogColor={'#3385ff'}
-                        tlog={element.tlog ? element.tlog : undefined}
+                        tlog={element.tlog ? element.tlog : []}
                         tlogColor={'#ff8533'}
                         temperature={element.temperature}
                         onRename={() => handleRename(element.id, element.name)}
@@ -141,7 +122,7 @@ const HomeScreen: React.FC = () => {
                         name={element.name}
                         onRename={() => handleRename(element.id, element.name)}
                         onSwitch={() =>
-                          handleMqttPublish('set', {
+                          global.mqttPublish('set', {
                             id: element.id,
                             on: !element.on,
                           })

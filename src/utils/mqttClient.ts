@@ -24,7 +24,7 @@ export class MQTT {
           aws_pubsub_endpoint: PUBSUB_ENDPOINT,
         })
       );
-    } catch (error) {
+    } catch (error: any) {
       onError(error);
     }
   }
@@ -39,7 +39,7 @@ export class MQTT {
         action,
         data,
       });
-    } catch (error) {
+    } catch (error: any) {
       onError(error);
     }
   }
@@ -52,13 +52,12 @@ export class MQTT {
     try {
       PubSub.subscribe(topic).subscribe({
         next: data => {
-          console.log('DATA: ', data)
           onMessage(data.value);
         },
-        error: error => onError(error),
-        close: () => console.error('CLOSED'),
+        error: error => onError(error.error),
+        close: () => global.mqttError('Topic smarthusOut CLOSED'),
       });
-    } catch (error) {
+    } catch (error: any) {
       onError(error);
     }
   }
@@ -66,7 +65,7 @@ export class MQTT {
   update(onError: (error: any) => void) {
     try {
       this.publish('retrieve', undefined, onError);
-    } catch (error) {
+    } catch (error: any) {
       onError(error);
     }
   }
