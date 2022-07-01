@@ -58,8 +58,7 @@ const HomeScreen: React.FC = () => {
     <ImageBackground
       source={require('../../../assets/background1.png')}
       resizeMode="cover"
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={styles.appContainer}
+      style={GlobalStyles.appContainer}
     >
       <ScrollView
         // eslint-disable-next-line react-native/no-inline-styles
