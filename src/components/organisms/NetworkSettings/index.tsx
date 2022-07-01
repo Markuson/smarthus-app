@@ -7,7 +7,7 @@ import aspect from '../../../styles/GlobalAspect';
 import styles from './NetworkSettings.styles';
 
 import Title from '../../atoms/Title';
-import Button from '../../atoms/Button';
+import Button from '../../molecules/Button';
 
 const {
   color,

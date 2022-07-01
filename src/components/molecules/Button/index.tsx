@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, Vibration, View } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from '../../atoms/CustomIcon';
 
 import styles from './Button.styles';
 
@@ -62,9 +62,7 @@ const Button: React.FC<Props> = ({
       accessibilityLabel={accessibilityLabel}
     >
       {!!iconName && (
-        <View style={icon}>
-          <Icon name={iconName} size={iconSize} color={iconColor} />
-        </View>
+          <Icon name={iconName} size={iconSize} color={iconColor} /> 
       )}
       <View style={textContainer}>
         <Text
